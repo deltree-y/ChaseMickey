@@ -39,7 +39,7 @@ class UltraSonic():
     def GetDistance(self, cnt=5):
         t_start = time.time()
         distance_list = []
-        for i in range(cnt):
+        for _ in range(cnt):
             distance_list.append(self.GetRawDistance())
         #print("distance_list is %s"%distance_list)
         self.last_distance = de_noise(distance_list)
