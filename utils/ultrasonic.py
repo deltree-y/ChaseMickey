@@ -2,11 +2,12 @@
 import RPi.GPIO as GPIO
 import time
 
-from proc import de_noise
+from utils.proc import de_noise
 
 
 class UltraSonic():
     def __init__(self, ep=0, tp=1):
+        self.last_distance = 0
         #超声波引脚定义
         self.echo_pin = ep
         self.trig_pin = tp
@@ -29,7 +30,7 @@ class UltraSonic():
             pass
         t2 = time.time()
         distance = (((t2 - t1)* 340 / 2) * 100)
-        print("distance is %d(cm)"%distance)
+        #print("distance is %d(cm)"%distance)
         #t_end = time.time()
         #print("time used:%f"%(t_end-t_start))
         time.sleep(0.01)
@@ -41,11 +42,11 @@ class UltraSonic():
         for i in range(cnt):
             distance_list.append(self.GetRawDistance())
         #print("distance_list is %s"%distance_list)
-        ret = de_noise(distance_list)
+        self.last_distance = de_noise(distance_list)
         t_end = time.time()
-        print("final distance is - %s (cm)"%ret)
-        print("time used:%f\n\n"%(t_end-t_start))
-        return ret
+        print("final distance is - %s (cm)"%self.last_distance)
+        print("time used:%f"%(t_end-t_start))
+        return self.last_distance
 
 if __name__ == "__main__":
     us = UltraSonic()
