@@ -21,7 +21,7 @@ class Car():
                 print("walllllllllll")
                 self.driver.SetSpeed(self.driver.GetSpeed()+30)
                 self.driver.SpinRight()
-                time.sleep(0.2)
+                time.sleep(0.02)
                 self.driver.SetSpeed(self.driver.GetSpeed()-30)
                 micro_move_cnt = 0
             else:
