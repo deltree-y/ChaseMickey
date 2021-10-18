@@ -33,14 +33,12 @@ class Servo():
         return self.angle
 
     def PerformTurn(self):
-        print("angle is %d"%(self.angle))
+        #print("angle is %d"%(self.angle))
         pwm = GPIO.PWM(self.pin, 50)
         pwm.start(2.5 + 10 * self.angle/180)
-        #print("pwm.start(2.5 + 10 * self.angle/180)")
-        #self.pwm.ChangeDutyCycle(2.5 + 10 * self.angle/180)
-        time.sleep(0.3)
+        time.sleep(0.15)
         pwm.stop()
-        time.sleep(0.1)
+        time.sleep(0.02)
         del pwm
 
     def __del__(self):

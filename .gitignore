@@ -129,4 +129,8 @@ dmypy.json
 .pyre/
 
 # img
+darknet-nnpack/
 photo/
+pred/
+*.jpg
+*.png

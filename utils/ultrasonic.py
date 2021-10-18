@@ -44,8 +44,8 @@ class UltraSonic():
         #print("distance_list is %s"%distance_list)
         self.last_distance = de_noise(distance_list)
         t_end = time.time()
-        print("final distance is - %s (cm)"%self.last_distance)
-        print("time used:%f"%(t_end-t_start))
+        #print("final distance is - %.1f (cm)"%self.last_distance)
+        #print("time used:%f"%(t_end-t_start))
         return self.last_distance
 
 if __name__ == "__main__":

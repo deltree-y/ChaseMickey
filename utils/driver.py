@@ -13,7 +13,7 @@ class Driver():
         self.en_b = en_b
 
         #dc配置
-        self.dc = 10
+        self.__dc = 10
 
         #GPIO配置
         GPIO.setmode(GPIO.BCM)
@@ -44,7 +44,42 @@ class Driver():
     def GoBackward(self):
         self.__SetInput(GPIO.LOW, GPIO.HIGH, GPIO.LOW, GPIO.HIGH)
         self.__ChangeDutyCycle()
+
+    def DoSpinRight90Turn(self):
+        self.__DoShortMove(self.SpinRight, 65, 0.2)
     
+    def DoSpinLeft90Turn(self):
+        self.__DoShortMove(self.SpinLeft, 65, 0.2)
+
+    def DoTinySpinRightTurn(self):
+        self.__DoShortMove(self.SpinRight, 65, 0.05)
+    
+    def DoTinySpinLeftTurn(self):
+        self.__DoShortMove(self.SpinLeft, 65, 0.05)
+
+
+    def DoTinyRightTurn(self):
+        print("go tiny right!")
+        self.__DoShortMove(self.TurnRight, 65, 0.1)
+    
+    def DoTinyLeftTurn(self):
+        print("go tiny left!")
+        self.__DoShortMove(self.TurnLeft, 65, 0.1)
+
+    def DoShortFastBackward(self):
+        self.__DoShortMove(self.GoBackward, 80, 0.1)
+
+    def DoShortFastForward(self):
+        self.__DoShortMove(self.GoForward, 80, 0.1)
+
+    def __DoShortMove(self, move_func, speed, delay=0.1):
+        ori_speed = self.GetSpeed()
+        self.SetSpeed(speed)
+        move_func()
+        time.sleep(delay)
+        self.SetSpeed(ori_speed)
+        self.Stop()
+
     def TurnLeft(self):
         self.__SetInput(GPIO.LOW, GPIO.LOW, GPIO.HIGH, GPIO.LOW)
         self.__ChangeDutyCycle()
@@ -67,20 +102,33 @@ class Driver():
     
     def SetSpeed(self, speed):
         if speed > 100:
-            self.dc = 100
+            self.__dc = 100
         else:
-            self.dc = speed
+            self.__dc = speed
         self.__ChangeDutyCycle()
 
     def GetSpeed(self):
-        return self.dc
+        return self.__dc
     
     def __ChangeDutyCycle(self):
-        self.pwm_en_a.ChangeDutyCycle(self.dc)
-        self.pwm_en_b.ChangeDutyCycle(self.dc)
+        self.pwm_en_a.ChangeDutyCycle(self.__dc)
+        self.pwm_en_b.ChangeDutyCycle(self.__dc)
 
     def __SetInput(self, in1, in2, in3, in4):
         GPIO.output(self.in_1, in1)
         GPIO.output(self.in_2, in2)
         GPIO.output(self.in_3, in3)
         GPIO.output(self.in_4, in4)
+
+if __name__ == "__main__":
+    d = Driver()
+    d.DoSpinLeft90Turn()
+    time.sleep(0.5)
+    d.DoSpinRight90Turn()
+    time.sleep(0.5)
+    d.DoShortFastBackward()
+    time.sleep(0.5)
+    d.DoShortFastForward()
+    time.sleep(0.5)
+
+    
