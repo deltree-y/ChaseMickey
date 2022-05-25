@@ -33,9 +33,12 @@ class YoloV3():
     
     def InputFile(self, in_str):
         if self.is_ready_to_input:
-            self.yolo_proc.stdin.write((in_str+"\n").encode())
-            self.yolo_proc.stdin.flush()
-            self.is_ready_to_input = False
+            try:
+                self.yolo_proc.stdin.write((in_str+"\n").encode())
+                self.yolo_proc.stdin.flush()
+                self.is_ready_to_input = False
+            except: 
+                self.is_ready_to_input = False
     
     def IsFindTarget(self):
         found_cnt = 0

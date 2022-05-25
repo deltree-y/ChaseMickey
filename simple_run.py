@@ -15,7 +15,7 @@ if __name__ == "__main__":
     servo_h = Servo(11)
     cam = Cam()
     yolo = YoloV3(target_list=['dog','cat'])
-    car = Car(init_speed=25)
+    car = Car(init_speed=15)
 
     servo_v.TurnToCenter()
     servo_h.TurnToCenter()
@@ -25,11 +25,16 @@ if __name__ == "__main__":
         while True:
             cam_file_cnt = 0
             while True:
-                
                 #servo_h.TurnTo(servo_h.GetAngle()+random.randint(-1,1)*10)
+                servo_v.TurnTo(75)
                 cam_file_cnt = cam_file_cnt + 1
                 if cam_file_cnt%25 == 0:
+                    car.driver.Stop()
+                    while cam.IsShooting() is True:
+                        time.sleep(0.1)
                     cam.CapAndSave("./frame.jpg")
+                    while cam.IsShooting() is True:
+                        time.sleep(0.1)
                     copyfile('predictions.png', './pred/pred_frame%04d.png' % cam_file_cnt)
 
                 if yolo.IsStdoutHasStdString():

@@ -5,16 +5,21 @@ import time
 class Cam():
     def __init__(self, dev=0):
         self.dev = dev
+        self.isShooting = False
     
     def CapAndSave(self, fn="img.jpg"):
         thread = CapThread(self.dev, fn, cbk=self.on_shot)
         thread.start()
+        self.isShooting = True
 
         #print("main thread end")
 
     def on_shot(self):
-        #print("main thread on_shot() called.")
-        pass
+        print("main thread on_shot() called.")
+        self.isShooting = False
+    
+    def IsShooting(self):
+        return self.isShooting
 
     def __del__(self):
         pass
@@ -27,8 +32,9 @@ class CapThread(threading.Thread):
         self.callback = cbk
 
     def run(self):
-        #print("new thread started!")
+        print("start to take photo: new thread started!")
         cap=cv2.VideoCapture(self.dev)
+        print("cap.isOpened():%s"%cap.isOpened())
         _, frame=cap.read()
         cv2.imwrite(self.fn,frame)
         time.sleep(0.2)
@@ -42,6 +48,8 @@ class CapThread(threading.Thread):
 
         #print("shoted!")
 
+    def __del__(self):
+        pass
 
 if __name__ == "__main__":
     c = Cam()

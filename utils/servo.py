@@ -11,8 +11,9 @@ class Servo():
         GPIO.setup(self.pin, GPIO.OUT)
 
     def TurnTo(self, angle):
-        self.SetAngle(angle)
-        self.PerformTurn()
+        if self.GetAngle() != angle:
+            self.SetAngle(angle)
+            self.PerformTurn()
     
     def TurnToCenter(self):
         self.TurnTo(90)
